@@ -11,7 +11,7 @@ index = {"create_maze": "game.ipynb",
          "ShameGame1": "gym.ipynb",
          "PlainGame1": "gym.ipynb",
          "plot_maze": "plot.ipynb",
-         "plot_historgrams": "plot.ipynb",
+         "plot_histograms": "plot.ipynb",
          "plot_available": "plot.ipynb"}
 
 modules = ["game.py",
