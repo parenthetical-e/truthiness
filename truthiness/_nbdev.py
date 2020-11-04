@@ -2,17 +2,21 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"create_maze": "boards.ipynb",
-         "shame_game": "boards.ipynb",
-         "plot_boards": "plots.ipynb",
-         "plain_game": "boards.ipynb",
-         "available_moves": "boards.ipynb",
-         "plot_maze": "plots.ipynb",
-         "plot_historgrams": "plots.ipynb",
-         "plot_available": "plots.ipynb"}
+index = {"create_maze": "game.ipynb",
+         "shame_game": "game.ipynb",
+         "plot_boards": "plot.ipynb",
+         "plain_game": "game.ipynb",
+         "random_move": "game.ipynb",
+         "available_moves": "game.ipynb",
+         "ShameGame1": "gym.ipynb",
+         "PlainGame1": "gym.ipynb",
+         "plot_maze": "plot.ipynb",
+         "plot_historgrams": "plot.ipynb",
+         "plot_available": "plot.ipynb"}
 
-modules = ["boards.py",
-           "plots.py"]
+modules = ["game.py",
+           "gym.py",
+           "plot.py"]
 
 doc_url = "https://parenthetical-e.github.io/truthiness/"
 
