@@ -10,12 +10,14 @@ index = {"create_maze": "game.ipynb",
          "available_moves": "game.ipynb",
          "ShameGame1": "gym.ipynb",
          "PlainGame1": "gym.ipynb",
+         "Random": "player.ipynb",
          "plot_maze": "plot.ipynb",
          "plot_histograms": "plot.ipynb",
          "plot_available": "plot.ipynb"}
 
 modules = ["game.py",
            "gym.py",
+           "player.py",
            "plot.py"]
 
 doc_url = "https://parenthetical-e.github.io/truthiness/"

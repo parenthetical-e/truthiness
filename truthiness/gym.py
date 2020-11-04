@@ -22,7 +22,7 @@ import warnings
 warnings.filterwarnings("ignore")
 
 # Cell
-class ShameGame1(gym.Env):
+class ShameGame1(Base):
     """A one-sided game of learning and shame"""
     def __init__(self, maze=None, sigma=0.5, shame=0.5, max_steps=10):
         self.maze = maze
@@ -40,14 +40,14 @@ class ShameGame1(gym.Env):
             raise ValueError(f"env exceeded max_steps ({self.count})")
 
         # Shuffle state, and generate returns
-        x, y = move
-        reward = deepcopy((self.E[x,y], self.Q[x,y]))
-        state = move
+        self.x, self.y = move
+        self.move_history.append(move)
 
         # Values are only found once
+        reward = deepcopy((self.E[x,y], self.Q[x,y]))
         self.E[x,y] = 0
         self.Q[x,y] = 0
-        self.move_history.append(move)
+        state = (self.y, self.x, self.E, self.Q)
 
         # Limit game length
         self.count += 1
@@ -68,27 +68,10 @@ class ShameGame1(gym.Env):
         self.E, self.Q = shame_game(
             self.n, sigma=self.sigma, shame=self.shame, maze=self.maze)
 
-        return self.x, self.y
-
-
-    def moves(self, x, y):
-        # Get all the moves then filter for moves that
-        # have already been played
-        candidates = available_moves(x, y, self.maze)
-
-        available = []
-        for a in candidates:
-            if a not in self.move_history:
-                available.append(a)
-
-        return available
-
-
-    def render(self, mode='human', close=False):
-        pass
+        return (self.y, self.x, self.E, self.Q)
 
 # Cell
-class PlainGame1(gym.Env):
+class PlainGame1(Base):
     """A one-sided game of learning and consequences"""
     def __init__(self, maze=None, sigma=0.5, max_steps=10):
         self.maze = maze
@@ -105,14 +88,15 @@ class PlainGame1(gym.Env):
             raise ValueError(f"env exceeded max_steps ({self.count})")
 
         # Shuffle state, and generate returns
-        x, y = move
-        reward = deepcopy((self.E[x,y], self.Q[x,y]))
-        state = move
+        self.x, self.y = move
+        self.move_history.append(move)
 
         # Values are only found once
+        reward = deepcopy((self.E[x,y], self.Q[x,y]))
         self.E[x,y] = 0
         self.Q[x,y] = 0
-        self.move_history.append(move)
+        state = (self.y, self.x, self.E, self.Q)
+
 
         # Limit game length
         self.count += 1
@@ -130,24 +114,6 @@ class PlainGame1(gym.Env):
 
         # Generate new
         self.x, self.y = random_move(self.maze)
-        self.E, self.Q = plain_game(
-            self.n, sigma=self.sigma, maze=self.maze)
+        self.E, self.Q = plain_game(self.n, sigma=self.sigma, maze=self.maze)
 
-        return self.x, self.y
-
-
-    def moves(self, x, y):
-        # Get all the moves then filter for moves that
-        # have already been played
-        candidates = available_moves(x, y, self.maze)
-
-        available = []
-        for a in candidates:
-            if a not in self.move_history:
-                available.append(a)
-
-        return available
-
-
-    def render(self, mode='human', close=False):
-        pass
+        return (self.y, self.x, self.E, self.Q)
