@@ -19,6 +19,7 @@ from .game import random_move
 
 # Gym is annoying these days...
 import warnings
+
 warnings.filterwarnings("ignore")
 
 # Cell
@@ -36,13 +37,13 @@ class Base(gym.Env):
 
         return available
 
-
-    def render(self, mode='human', close=False):
+    def render(self, mode="human", close=False):
         pass
 
 # Cell
 class ShameGame1(Base):
     """A one-sided game of learning and shame"""
+
     def __init__(self, maze=None, sigma=0.5, shame=0.5, max_steps=10):
         self.maze = maze
         self.n = self.maze.shape[0]
@@ -53,7 +54,6 @@ class ShameGame1(Base):
 
         self.reset()
 
-
     def step(self, move):
         if self.count > self.max_steps:
             raise ValueError(f"env exceeded max_steps ({self.count})")
@@ -63,9 +63,9 @@ class ShameGame1(Base):
         self.move_history.append(move)
 
         # Values are only found once
-        reward = deepcopy((self.E[x,y], self.Q[x,y]))
-        self.E[x,y] = 0
-        self.Q[x,y] = 0
+        reward = deepcopy((self.E[x, y], self.Q[x, y]))
+        self.E[x, y] = 0
+        self.Q[x, y] = 0
         state = (self.y, self.x, self.E, self.Q)
 
         # Limit game length
@@ -74,7 +74,6 @@ class ShameGame1(Base):
             self.done = True
 
         return state, reward, self.done, {}
-
 
     def reset(self):
         # reinit
@@ -85,13 +84,15 @@ class ShameGame1(Base):
         # Generate new
         self.x, self.y = random_move(self.maze)
         self.E, self.Q = shame_game(
-            self.n, sigma=self.sigma, shame=self.shame, maze=self.maze)
+            self.n, sigma=self.sigma, shame=self.shame, maze=self.maze
+        )
 
         return (self.y, self.x, self.E, self.Q)
 
 # Cell
 class PlainGame1(Base):
     """A one-sided game of learning and consequences"""
+
     def __init__(self, maze=None, sigma=0.5, max_steps=10):
         self.maze = maze
         self.n = self.maze.shape[0]
@@ -100,7 +101,6 @@ class PlainGame1(Base):
         self.sigma = sigma
 
         self.reset()
-
 
     def step(self, move):
         if self.count > self.max_steps:
@@ -111,11 +111,10 @@ class PlainGame1(Base):
         self.move_history.append(move)
 
         # Values are only found once
-        reward = deepcopy((self.E[x,y], self.Q[x,y]))
-        self.E[x,y] = 0
-        self.Q[x,y] = 0
+        reward = deepcopy((self.E[x, y], self.Q[x, y]))
+        self.E[x, y] = 0
+        self.Q[x, y] = 0
         state = (self.y, self.x, self.E, self.Q)
-
 
         # Limit game length
         self.count += 1
@@ -123,7 +122,6 @@ class PlainGame1(Base):
             self.done = True
 
         return state, reward, self.done, {}
-
 
     def reset(self):
         # reinit

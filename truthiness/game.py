@@ -23,7 +23,7 @@ def create_maze(n, k=4, t=4, prng=None):
     if prng is None:
         prng = np.random.RandomState()
 
-    maze = np.zeros((n,n))
+    maze = np.zeros((n, n))
 
     # Initial seends
     locs = []
@@ -58,7 +58,7 @@ def create_maze(n, k=4, t=4, prng=None):
             # Add to maze
             x += dx
             y += dy
-            maze[x,y] = 1
+            maze[x, y] = 1
 
     return maze
 
@@ -68,21 +68,23 @@ def shame_game(n=8, sigma=0.5, shame=1, maze=None, prng=None):
         prng = np.random.RandomState()
 
     if maze is None:
-        maze = 1 # do nothing
+        maze = 1  # do nothing
     else:
-        maze = np.logical_not(maze) # mask w/ maze
+        maze = np.logical_not(maze)  # mask w/ maze
 
-    E = np.random.lognormal(sigma=sigma, size=n**2)
+    E = np.random.lognormal(sigma=sigma, size=n ** 2)
     E /= np.max(E)
     Q = shame * E
 
-    E = E.reshape(n,n)
-    Q = Q.reshape(n,n)
+    E = E.reshape(n, n)
+    Q = Q.reshape(n, n)
 
     return E * maze, Q * maze
 
 # Cell
-def plot_boards(E, Q, plot=False, path=None, height=2, width=3, name='board.png', **heatmap_kwargs):
+def plot_boards(
+    E, Q, plot=False, path=None, height=2, width=3, name="board.png", **heatmap_kwargs
+):
     """Plot the boards"""
 
     # Fix colors (overide kwargs)
@@ -90,25 +92,15 @@ def plot_boards(E, Q, plot=False, path=None, height=2, width=3, name='board.png'
 
     # Plot!
     fig, ax = plt.subplots(ncols=2, figsize=(width, height))  # Sample figsize in inches
-    ax[0] = sns.heatmap(E,
-                     linewidths=3,
-                     center=0,
-                     ax=ax[0],
-                     cmap=cmap,
-                     cbar=False,
-                     **heatmap_kwargs
-                     )
-    ax[1] = sns.heatmap(-Q,
-                     linewidths=3,
-                     center=0,
-                     ax=ax[1],
-                     cmap=cmap,
-                     cbar=False,
-                     **heatmap_kwargs
-                     )
+    ax[0] = sns.heatmap(
+        E, linewidths=3, center=0, ax=ax[0], cmap=cmap, cbar=False, **heatmap_kwargs
+    )
+    ax[1] = sns.heatmap(
+        -Q, linewidths=3, center=0, ax=ax[1], cmap=cmap, cbar=False, **heatmap_kwargs
+    )
 
-    ax[0].title.set_text('$E$')
-    ax[1].title.set_text('$Q$')
+    ax[0].title.set_text("$E$")
+    ax[1].title.set_text("$Q$")
 
     # Save an image?
     if path is not None:
@@ -117,7 +109,7 @@ def plot_boards(E, Q, plot=False, path=None, height=2, width=3, name='board.png'
     # Show?
     if plot:
         plt.pause(0.01)
-    plt.close('all')
+    plt.close("all")
 
 # Cell
 def plain_game(n=10, sigma=0.5, maze=None, prng=None):
@@ -125,16 +117,16 @@ def plain_game(n=10, sigma=0.5, maze=None, prng=None):
         prng = np.random.RandomState()
 
     if maze is None:
-        maze = 1 # do nothing
+        maze = 1  # do nothing
     else:
-        maze = np.logical_not(maze) # mask w/ maze
+        maze = np.logical_not(maze)  # mask w/ maze
 
-    E = np.random.lognormal(sigma=sigma, size=n**2)
+    E = np.random.lognormal(sigma=sigma, size=n ** 2)
     E /= np.max(E)
-    E = E.reshape(n,n)
-    Q = np.random.lognormal(sigma=sigma, size=n**2)
+    E = E.reshape(n, n)
+    Q = np.random.lognormal(sigma=sigma, size=n ** 2)
     Q /= np.max(Q)
-    Q = Q.reshape(n,n)
+    Q = Q.reshape(n, n)
 
     return E * maze, Q * maze
 
@@ -154,7 +146,7 @@ def available_moves(x, y, maze):
     available = []
 
     # Go down
-    for n in range(x+1, N):
+    for n in range(x + 1, N):
         if maze[n, y] == 0:
             available.append((n, y))
         else:
@@ -168,7 +160,7 @@ def available_moves(x, y, maze):
             break
 
     # Go left
-    for n in range(y+1, N):
+    for n in range(y + 1, N):
         if maze[x, n] == 0:
             available.append((x, n))
         else:

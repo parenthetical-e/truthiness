@@ -8,18 +8,14 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 # Cell
-def plot_maze(maze, plot=False, path=None, height=2, width=3, name='board.png'):
+def plot_maze(maze, plot=False, path=None, height=2, width=3, name="board.png"):
     """Plot the maze (white is the maze bounderies)"""
 
     # Plot!
     fig, ax = plt.subplots(figsize=(width, height))  # Sample figsize in inches
-    ax = sns.heatmap(maze,
-                     linewidths=3,
-                     vmin=0,
-                     vmax=1,
-                     cbar=False,
-                     cmap=["black", "white"],
-                     ax=ax)
+    ax = sns.heatmap(
+        maze, linewidths=3, vmin=0, vmax=1, cbar=False, cmap=["black", "white"], ax=ax
+    )
 
     # Save an image?
     if path is not None:
@@ -28,10 +24,12 @@ def plot_maze(maze, plot=False, path=None, height=2, width=3, name='board.png'):
     # Show?
     if plot:
         plt.pause(0.01)
-    plt.close('all')
+    plt.close("all")
 
 # Cell
-def plot_boards(E, Q, plot=False, path=None, height=2, width=3, name='board.png', **heatmap_kwargs):
+def plot_boards(
+    E, Q, plot=False, path=None, height=2, width=3, name="board.png", **heatmap_kwargs
+):
     """Plot the boards"""
 
     # Fix colors (overide kwargs)
@@ -39,25 +37,15 @@ def plot_boards(E, Q, plot=False, path=None, height=2, width=3, name='board.png'
 
     # Plot!
     fig, ax = plt.subplots(ncols=2, figsize=(width, height))  # Sample figsize in inches
-    ax[0] = sns.heatmap(E,
-                     linewidths=3,
-                     center=0,
-                     ax=ax[0],
-                     cmap=cmap,
-                     cbar=False,
-                     **heatmap_kwargs
-                     )
-    ax[1] = sns.heatmap(-Q,
-                     linewidths=3,
-                     center=0,
-                     ax=ax[1],
-                     cmap=cmap,
-                     cbar=False,
-                     **heatmap_kwargs
-                     )
+    ax[0] = sns.heatmap(
+        E, linewidths=3, center=0, ax=ax[0], cmap=cmap, cbar=False, **heatmap_kwargs
+    )
+    ax[1] = sns.heatmap(
+        -Q, linewidths=3, center=0, ax=ax[1], cmap=cmap, cbar=False, **heatmap_kwargs
+    )
 
-    ax[0].title.set_text('$E$')
-    ax[1].title.set_text('$Q$')
+    ax[0].title.set_text("$E$")
+    ax[1].title.set_text("$Q$")
 
     # Save an image?
     if path is not None:
@@ -66,15 +54,17 @@ def plot_boards(E, Q, plot=False, path=None, height=2, width=3, name='board.png'
     # Show?
     if plot:
         plt.pause(0.01)
-    plt.close('all')
+    plt.close("all")
 
 # Cell
-def plot_histograms(E, Q, plot=False, path=None, height=2, width=3, name='board.png', **hist_kwargs):
+def plot_histograms(
+    E, Q, plot=False, path=None, height=2, width=3, name="board.png", **hist_kwargs
+):
     """Plot a histograms of a board's values."""
 
     # Set colors to match board
     green = [0.29233637, 0.51074656, 0.39061738, 1.0]
-    violet = [0.66131564, 0.3363342 , 0.71648282, 1.0]
+    violet = [0.66131564, 0.3363342, 0.71648282, 1.0]
 
     # Plot!
     fig, ax = plt.subplots(figsize=(width, height))  # Sample figsize in inches
@@ -89,10 +79,12 @@ def plot_histograms(E, Q, plot=False, path=None, height=2, width=3, name='board.
     # Show?
     if plot:
         plt.pause(0.01)
-    plt.close('all')
+    plt.close("all")
 
 # Cell
-def plot_available(x, y, maze, available, plot=False, path=None, height=2, width=3, name='board.png'):
+def plot_available(
+    x, y, maze, available, plot=False, path=None, height=2, width=3, name="board.png"
+):
     """Plot available moves.
 
     Params
@@ -119,12 +111,14 @@ def plot_available(x, y, maze, available, plot=False, path=None, height=2, width
 
     # Plot!
     fig, ax = plt.subplots(figsize=(width, height))  # Sample figsize in inches
-    ax = sns.heatmap(board,
-                     linewidths=3,
-                     cbar=False,
-                     cmap=["black", "yellow", "red"],
-                     ax=ax,
-                     mask=maze)
+    ax = sns.heatmap(
+        board,
+        linewidths=3,
+        cbar=False,
+        cmap=["black", "yellow", "red"],
+        ax=ax,
+        mask=maze,
+    )
 
     # Save an image?
     if path is not None:
@@ -133,4 +127,4 @@ def plot_available(x, y, maze, available, plot=False, path=None, height=2, width
     # Show?
     if plot:
         plt.pause(0.01)
-    plt.close('all')
+    plt.close("all")
