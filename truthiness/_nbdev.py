@@ -7,6 +7,9 @@ index = {"create_maze": "game.ipynb",
          "plain_game": "game.ipynb",
          "random_move": "game.ipynb",
          "available_moves": "game.ipynb",
+         "Base": "gym.ipynb",
+         "ShameGame1": "gym.ipynb",
+         "PlainGame1": "gym.ipynb",
          "run": "player.ipynb",
          "save_results": "player.ipynb",
          "move_filter": "player.ipynb",
@@ -25,6 +28,7 @@ index = {"create_maze": "game.ipynb",
          "plot_available": "plot.ipynb"}
 
 modules = ["game.py",
+           "gym.py",
            "player.py",
            "plot.py"]
 
