@@ -37,6 +37,9 @@ class Base(gym.Env):
 
         return available
 
+    def set_maze(self, maze):
+        self.maze = maze
+
     def render(self, mode="human", close=False):
         pass
 
@@ -44,14 +47,14 @@ class Base(gym.Env):
 class ShameGame1(Base):
     """A one-sided game of learning and shame"""
 
-    def __init__(self, maze=None, sigma=0.5, shame=0.5, max_steps=10):
+    def __init__(self, n, maze=None, sigma=0.5, shame=0.5, max_steps=10, seed=None):
+        self.n = n
         self.maze = maze
-        self.n = self.maze.shape[0]
         self.max_steps = max_steps
-
         self.sigma = sigma
         self.shame = shame
 
+        self.prng = np.random.RandomState(seed)
         self.reset()
 
     def step(self, move):
@@ -59,13 +62,14 @@ class ShameGame1(Base):
             raise ValueError(f"env exceeded max_steps ({self.count})")
 
         # Shuffle state, and generate returns
-        self.x, self.y = move
+        x, y = move
         self.move_history.append(move)
 
         # Values are only found once
         reward = deepcopy((self.E[x, y], self.Q[x, y]))
         self.E[x, y] = 0
         self.Q[x, y] = 0
+        self.x, self.y = x, y
         state = (self.y, self.x, self.E, self.Q)
 
         # Limit game length
@@ -82,9 +86,9 @@ class ShameGame1(Base):
         self.move_history = []
 
         # Generate new
-        self.x, self.y = random_move(self.maze)
-        self.E, self.Q = shame_game(
-            self.n, sigma=self.sigma, shame=self.shame, maze=self.maze
+        self.x, self.y, self.prng = random_move(self.maze, prng=self.prng)
+        self.E, self.Q, self.prng = shame_game(
+            self.n, sigma=self.sigma, shame=self.shame, maze=self.maze, prng=self.prng
         )
 
         return (self.y, self.x, self.E, self.Q)
@@ -93,13 +97,13 @@ class ShameGame1(Base):
 class PlainGame1(Base):
     """A one-sided game of learning and consequences"""
 
-    def __init__(self, maze=None, sigma=0.5, max_steps=10):
+    def __init__(self, n, maze=None, sigma=0.5, max_steps=10, seed=None):
+        self.n = n
         self.maze = maze
-        self.n = self.maze.shape[0]
         self.max_steps = max_steps
-
         self.sigma = sigma
 
+        self.prng = np.random.RandomState(seed)
         self.reset()
 
     def step(self, move):
@@ -107,13 +111,14 @@ class PlainGame1(Base):
             raise ValueError(f"env exceeded max_steps ({self.count})")
 
         # Shuffle state, and generate returns
-        self.x, self.y = move
+        x, y = move
         self.move_history.append(move)
 
         # Values are only found once
         reward = deepcopy((self.E[x, y], self.Q[x, y]))
         self.E[x, y] = 0
         self.Q[x, y] = 0
+        self.x, self.y = x, y
         state = (self.y, self.x, self.E, self.Q)
 
         # Limit game length
@@ -130,7 +135,9 @@ class PlainGame1(Base):
         self.move_history = []
 
         # Generate new
-        self.x, self.y = random_move(self.maze)
-        self.E, self.Q = plain_game(self.n, sigma=self.sigma, maze=self.maze)
+        self.x, self.y, self.prng = random_move(self.maze, self.prng)
+        self.E, self.Q, self.prng = plain_game(
+            self.n, sigma=self.sigma, maze=self.maze, prng=self.prng
+        )
 
         return (self.y, self.x, self.E, self.Q)

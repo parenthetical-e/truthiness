@@ -14,7 +14,7 @@ def plot_maze(maze, plot=False, path=None, height=2, width=3, name="board.png"):
     # Plot!
     fig, ax = plt.subplots(figsize=(width, height))  # Sample figsize in inches
     ax = sns.heatmap(
-        maze, linewidths=3, vmin=0, vmax=1, cbar=False, cmap=["black", "white"], ax=ax
+        maze, linewidths=3, vmin=0, vmax=1, cbar=False, cmap=["grey", "white"], ax=ax
     )
 
     # Save an image?
@@ -44,8 +44,8 @@ def plot_boards(
         -Q, linewidths=3, center=0, ax=ax[1], cmap=cmap, cbar=False, **heatmap_kwargs
     )
 
-    ax[0].title.set_text("$E$")
-    ax[1].title.set_text("$Q$")
+    ax[0].title.set_text("Information ($E$)")
+    ax[1].title.set_text("Consequence ($Q$)")
 
     # Save an image?
     if path is not None:
@@ -115,7 +115,7 @@ def plot_available(
         board,
         linewidths=3,
         cbar=False,
-        cmap=["black", "yellow", "red"],
+        cmap=["grey", "yellow", "red"],
         ax=ax,
         mask=maze,
     )
