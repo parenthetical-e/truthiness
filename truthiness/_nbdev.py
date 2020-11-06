@@ -2,7 +2,12 @@
 
 __all__ = ["index", "modules", "custom_doc_links", "git_url"]
 
-index = {"Base": "gym.ipynb",
+index = {"create_maze": "game.ipynb",
+         "shame_game": "game.ipynb",
+         "plain_game": "game.ipynb",
+         "random_move": "game.ipynb",
+         "available_moves": "game.ipynb",
+         "Base": "gym.ipynb",
          "ShameGame1": "gym.ipynb",
          "PlainGame1": "gym.ipynb",
          "run": "player.ipynb",
@@ -24,7 +29,8 @@ index = {"Base": "gym.ipynb",
          "plot_histograms": "plot.ipynb",
          "plot_available": "plot.ipynb"}
 
-modules = ["gym.py",
+modules = ["game.py",
+           "gym.py",
            "player.py",
            "plot.py"]
 

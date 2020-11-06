@@ -13,9 +13,12 @@ plt.rcParams["figure.facecolor"] = "white"
 # Cell
 def _shift(move):
     """Shift the move so it plots nice as an arrow"""
-    return (move[0] + 0.5, move[1] + 0.5)
+    return (move[1] + 0.5, move[0] + 0.5)
 
 # Cell
+from copy import deepcopy
+
+
 def plot_maze(
     maze, moves=None, plot=False, path=None, height=2, width=3, name="board.png"
 ):
@@ -44,7 +47,7 @@ def plot_maze(
                 xytext=_shift(last),
                 arrowprops=dict(width=1, headwidth=10, color="black"),
             )
-            last = move
+            last = deepcopy(move)
 
     # Save an image?
     if path is not None:
@@ -190,7 +193,7 @@ def plot_available(
         linewidths=3,
         cbar=False,
         square=True,
-        cmap=["grey", "yellow", "red"],
+        cmap=["grey", "yellow", "black"],
         ax=ax,
         mask=maze,
     )

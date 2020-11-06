@@ -9,6 +9,7 @@ import numpy as np
 
 from truthiness import gym
 from .game import available_moves
+from .plot import plot_available
 from .game import random_move
 from .game import create_maze
 
@@ -17,6 +18,7 @@ def run(
     n,
     player,
     num_episodes=10,
+    num_steps=2,
     env_name="ShameGame1",
     env_kwargs=None,
     maze_kwargs=None,
@@ -55,23 +57,23 @@ def run(
         mazes.append((i, maze))
 
         # Reset
+        done = False
         t = 0
+
         env.set_maze(maze)
         x, y, Q, E = env.reset()
         Es.append((i, E))
         Qs.append((i, Q))
         moves.append((i, t, x, y))
-        done = False
 
         # -
-        while not done:
+        while (not done) and (t < num_steps):
             t += 1
 
             # Choose and act
             available = env.moves()
             x, y = player(E, Q, available)
             moves.append((i, t, x, y))
-
             state, reward, done, _ = env.step((x, y))
 
             # Log data

@@ -70,7 +70,7 @@ class ShameGame1(Base):
         self.E[x, y] = 0
         self.Q[x, y] = 0
         self.x, self.y = x, y
-        state = (self.y, self.x, self.E, self.Q)
+        state = (self.x, self.y, self.E, self.Q)
 
         # Limit game length
         self.count += 1
@@ -80,18 +80,22 @@ class ShameGame1(Base):
         return state, reward, self.done, {}
 
     def reset(self):
-        # reinit
-        self.count = 0
-        self.done = False
-        self.move_history = []
-
         # Generate new
-        self.x, self.y, self.prng = random_move(self.maze, prng=self.prng)
+        x, y, self.prng = random_move(self.maze, prng=self.prng)
         self.E, self.Q, self.prng = shame_game(
             self.n, sigma=self.sigma, shame=self.shame, maze=self.maze, prng=self.prng
         )
+        # Can't move where we start
+        self.E[x, y] = 0
+        self.Q[x, y] = 0
+        self.move_history = [(x, y)]
+        self.x, self.y = x, y
 
-        return (self.y, self.x, self.E, self.Q)
+        # reinit
+        self.count = 0
+        self.done = False
+
+        return (self.x, self.y, self.E, self.Q)
 
 # Cell
 class PlainGame1(Base):
@@ -119,7 +123,7 @@ class PlainGame1(Base):
         self.E[x, y] = 0
         self.Q[x, y] = 0
         self.x, self.y = x, y
-        state = (self.y, self.x, self.E, self.Q)
+        state = (self.x, self.y, self.E, self.Q)
 
         # Limit game length
         self.count += 1
@@ -140,4 +144,4 @@ class PlainGame1(Base):
             self.n, sigma=self.sigma, maze=self.maze, prng=self.prng
         )
 
-        return (self.y, self.x, self.E, self.Q)
+        return (self.x, self.y, self.E, self.Q)
