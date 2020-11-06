@@ -133,15 +133,21 @@ class PlainGame1(Base):
         return state, reward, self.done, {}
 
     def reset(self):
-        # reinit
-        self.count = 0
-        self.done = False
-        self.move_history = []
-
         # Generate new
-        self.x, self.y, self.prng = random_move(self.maze, self.prng)
+        # Generate new
+        x, y, self.prng = random_move(self.maze, self.prng)
         self.E, self.Q, self.prng = plain_game(
             self.n, sigma=self.sigma, maze=self.maze, prng=self.prng
         )
+
+        # Can't move where we start
+        self.E[x, y] = 0
+        self.Q[x, y] = 0
+        self.move_history = [(x, y)]
+        self.x, self.y = x, y
+
+        # reinit
+        self.count = 0
+        self.done = False
 
         return (self.x, self.y, self.E, self.Q)

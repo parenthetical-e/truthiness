@@ -7,6 +7,7 @@ __all__ = ['run', 'save_table', 'extract_moves', 'extract_board', 'move_filter',
 import csv
 import numpy as np
 
+from copy import deepcopy
 from truthiness import gym
 from .game import available_moves
 from .plot import plot_available
@@ -54,17 +55,17 @@ def run(
     for i in range(num_episodes):
         # Reconfig the env
         maze, prng = create_maze(n, prng=prng, **maze_kwargs)
-        mazes.append((i, maze))
+        mazes.append((i, deepcopy(maze)))
 
         # Reset
         done = False
         t = 0
 
         env.set_maze(maze)
-        x, y, Q, E = env.reset()
-        Es.append((i, E))
-        Qs.append((i, Q))
+        x, y, E, Q = env.reset()
         moves.append((i, t, x, y))
+        Es.append((i, deepcopy(E)))
+        Qs.append((i, deepcopy(Q)))
 
         # -
         while (not done) and (t < num_steps):
@@ -73,8 +74,8 @@ def run(
             # Choose and act
             available = env.moves()
             x, y = player(E, Q, available)
-            moves.append((i, t, x, y))
             state, reward, done, _ = env.step((x, y))
+            moves.append((i, t, x, y))
 
             # Log data
             e, q = reward
@@ -82,7 +83,7 @@ def run(
             table.append(row)
 
             # Shift
-            x, y, Q, E = state
+            x, y, E, Q = state
 
     # Save to disk?
     if name is not None:

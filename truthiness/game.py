@@ -72,7 +72,7 @@ def shame_game(n, sigma=0.5, shame=1, maze=None, prng=None):
     else:
         maze = np.logical_not(maze)  # mask w/ maze
 
-    E = np.random.lognormal(sigma=sigma, size=n ** 2)
+    E = prng.lognormal(sigma=sigma, size=n ** 2)
     E /= np.max(E)
     Q = shame * E
 
@@ -91,7 +91,7 @@ def plain_game(n, sigma=0.5, maze=None, prng=None):
     else:
         maze = np.logical_not(maze)  # mask w/ maze
 
-    E = np.random.lognormal(sigma=sigma, size=n ** 2)
+    E = prng.lognormal(sigma=sigma, size=n ** 2)
     E /= np.max(E)
     E = E.reshape(n, n)
     Q = np.random.lognormal(sigma=sigma, size=n ** 2)
