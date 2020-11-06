@@ -7,15 +7,44 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+plt.rcParams["axes.facecolor"] = "white"
+plt.rcParams["figure.facecolor"] = "white"
+
 # Cell
-def plot_maze(maze, plot=False, path=None, height=2, width=3, name="board.png"):
+def _shift(move):
+    """Shift the move so it plots nice as an arrow"""
+    return (move[0] + 0.5, move[1] + 0.5)
+
+# Cell
+def plot_maze(
+    maze, moves=None, plot=False, path=None, height=2, width=3, name="board.png"
+):
     """Plot the maze (white is the maze bounderies)"""
 
     # Plot!
     fig, ax = plt.subplots(figsize=(width, height))  # Sample figsize in inches
     ax = sns.heatmap(
-        maze, linewidths=3, vmin=0, vmax=1, cbar=False, cmap=["grey", "white"], ax=ax
+        maze,
+        linewidths=3,
+        vmin=0,
+        vmax=1,
+        cbar=False,
+        square=True,
+        cmap=["grey", "white"],
+        ax=ax,
     )
+
+    # Plot the moves?
+    if moves is not None:
+        last = moves[0]
+        for move in moves[1:]:
+            ax.annotate(
+                "",
+                xy=_shift(move),
+                xytext=_shift(last),
+                arrowprops=dict(width=1, headwidth=10, color="black"),
+            )
+            last = move
 
     # Save an image?
     if path is not None:
@@ -28,7 +57,15 @@ def plot_maze(maze, plot=False, path=None, height=2, width=3, name="board.png"):
 
 # Cell
 def plot_boards(
-    E, Q, plot=False, path=None, height=2, width=3, name="board.png", **heatmap_kwargs
+    E,
+    Q,
+    moves=None,
+    plot=False,
+    path=None,
+    height=2,
+    width=3,
+    name="board.png",
+    **heatmap_kwargs
 ):
     """Plot the boards"""
 
@@ -38,14 +75,51 @@ def plot_boards(
     # Plot!
     fig, ax = plt.subplots(ncols=2, figsize=(width, height))  # Sample figsize in inches
     ax[0] = sns.heatmap(
-        E, linewidths=3, center=0, ax=ax[0], cmap=cmap, cbar=False, **heatmap_kwargs
+        E,
+        linewidths=3,
+        center=0,
+        ax=ax[0],
+        cmap=cmap,
+        cbar=False,
+        square=True,
+        **heatmap_kwargs
     )
     ax[1] = sns.heatmap(
-        -Q, linewidths=3, center=0, ax=ax[1], cmap=cmap, cbar=False, **heatmap_kwargs
+        -Q,
+        linewidths=3,
+        center=0,
+        ax=ax[1],
+        cmap=cmap,
+        cbar=False,
+        square=True,
+        **heatmap_kwargs
     )
 
     ax[0].title.set_text("Information ($E$)")
     ax[1].title.set_text("Consequence ($Q$)")
+
+    # Plot the moves?
+    if moves is not None:
+        # Es
+        last = moves[0]
+        for move in moves[1:]:
+            ax[0].annotate(
+                "",
+                xy=_shift(move),
+                xytext=_shift(last),
+                arrowprops=dict(width=1, headwidth=10, color="black"),
+            )
+            last = move
+        # Qs
+        last = moves[0]
+        for move in moves[1:]:
+            ax[1].annotate(
+                "",
+                xy=_shift(move),
+                xytext=_shift(last),
+                arrowprops=dict(width=1, headwidth=10, color="black"),
+            )
+            last = move
 
     # Save an image?
     if path is not None:
@@ -115,6 +189,7 @@ def plot_available(
         board,
         linewidths=3,
         cbar=False,
+        square=True,
         cmap=["grey", "yellow", "red"],
         ax=ax,
         mask=maze,
