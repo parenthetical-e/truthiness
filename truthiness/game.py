@@ -94,7 +94,7 @@ def plain_game(n, sigma=0.5, maze=None, prng=None):
     E = prng.lognormal(sigma=sigma, size=n ** 2)
     E /= np.max(E)
     E = E.reshape(n, n)
-    Q = np.random.lognormal(sigma=sigma, size=n ** 2)
+    Q = prng.lognormal(sigma=sigma, size=n ** 2)
     Q /= np.max(Q)
     Q = Q.reshape(n, n)
 
