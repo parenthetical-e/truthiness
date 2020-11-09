@@ -197,6 +197,7 @@ def plot_available(
         ax=ax,
         mask=maze,
     )
+    ax.title.set_text("Available moves")
 
     # Save an image?
     if path is not None:
